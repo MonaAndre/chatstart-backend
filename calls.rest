@@ -1,0 +1,12 @@
+### get all
+GET http://localhost:3000/api/chat
+
+
+### create new user
+POST http://localhost:3000/api/chat
+Content-Type: application/json; charset=utf-8
+
+{
+   "userName": "user2",
+   "password": "hejhopp"
+ }
