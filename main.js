@@ -2,47 +2,34 @@ const express = require("express")
 const app = express()
 const port = 3000
 const cors = require ("cors")
-const bodyParser = require ("body-parser")
-
-app.use(cors())
-app.use(bodyParser.json())
-
-function getNextId(){
-    let m = Math.max(...users.map(user => user.id))
-    return m + 1
-}
+const {sequelize, User} = require ('./models')
+const migrationhelper = require('./migrationhelper')
+const session = require('express-session');
+const userController = require('./controllers/userController.js')
 
 
-let users = [{
-   userName: "user1",
-   password: "1998",
-   id: 1
-}]
+app.use(express.json())
 
-let messages= [{
-    userName: "user1",
-    message: "hej hopp trallalla",
-    time: "18.30.45"
- }
-]
-app.get('/api/chat',(req,res)=>{
-    let result = users.map(user=>({
-        userName: user.userName,
-        password: user.password,
-    }))
-     res.json(result)
-});
 
-app.post('/api/chat',(req,res)=>{
-  const user = {
-      userName : req.body.userName,
-      password: req.body.password,
-      id:getNextId()
-  }
-  users.push(user)
-  res.status(201).send('Created')
-});
+app.use(cors({
+    origin:"http://localhost:5500",
+    credentials:true
+}))
 
-app.listen(port, () => {
+app.use(session({
+    secret: 'my-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    // cookie: { secure: true } HTTPS
+}));
+
+app.post('/createAccount', userController.onCreateAccount)
+app.post('/api/signIn',userController.onLogin);
+
+
+app.listen(port, async () => {
+    await migrationhelper.migrate()
+    await sequelize.authenticate()
     console.log(`Example app listening2 on port ${port}`)
 })
+
