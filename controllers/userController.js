@@ -28,6 +28,7 @@ async function onLogin(req,res){
 }
 
 async function onCreateAccount(req,res){
+    console.log(req.body)
     // sommar123
     const {userName,email,password} = req.body
     const hashedPassword = await bcrypt.hash(password, 10)

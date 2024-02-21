@@ -15,7 +15,7 @@ app.use(express.json())
 
 
 app.use(cors({
-    origin:"http://127.0.0.1:5501",
+    origin:"http://localhost:5501",
     credentials:true
 }))
 
@@ -27,7 +27,7 @@ app.use(session({
 }));
 
 //app.post('/createAccount',validateCreateUser, userController.onCreateAccount)
-app.post('/api/signIn',userController.onLogin);
+app.post('/api/signIn', userController.onLogin);
 
 app.post('/createAccount', validateCreateUser, userController.onCreateAccount,
   (req, res) => {
