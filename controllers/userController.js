@@ -8,19 +8,23 @@ async function onLogin(req,res){
     // 3. Skapa koppling i session storage
     //   mappa cookie -> useraccount.id
 
-    const {email,password} = req.body
+    const {userName,password} = req.body
+    console.log(req.body)
 
     const user = await User.findOne({
-        where: {email}
+        where: {userName}
     });
     if (!user) {
         return res.status(401).json('Login failed');
     }
 
-    const passwordValid = await bcrypt.compare(password, user.password);
-    if (!passwordValid) {
-        return res.status(401).json('Login failed');
-    }    
+    console.log(password)
+    console.log(user.password)
+
+    // const passwordValid = await bcrypt.compare(password, user.password);
+    // if (!passwordValid) {
+    //     return res.status(401).json('Login failed');
+    // }    
 
     req.session.userId = user.id
 

@@ -9,6 +9,7 @@ const userController = require('./controllers/userController.js')
 const {check, validationResult} = require('express-validator')
 const {requireAuth} = require('./middlewares/requireAuth.js')
 const {validateCreateUser} = require('./validators/userValidators.js')
+const messageController = require('./controllers/messageController.js')
 
 
 app.use(express.json())
@@ -34,10 +35,11 @@ app.post('/createAccount', validateCreateUser, userController.onCreateAccount,
     res.send(`Hello, ${req.body.name}!`);
 });
 
+app.post('/newMessage', messageController.onCreateMessage);
+
 app.listen(port, async () => {
     await migrationhelper.migrate()
     await sequelize.authenticate()
     console.log(`Example app listening2 on port ${port}`)
 })
-
 
