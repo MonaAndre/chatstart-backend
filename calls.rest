@@ -11,3 +11,13 @@ Content-Type: application/json; charset=utf-8
    "password": "Hejhopp12.",
    "email": "hej@mail.com"
  }  
+
+
+### create new message
+ POST http://127.0.0.1:3000/newMessage
+ Content-Type: application/json; charset=utf-8
+
+ {
+  "userName": "Lisa",
+   "text": "hejdå!"
+ }
