@@ -2,7 +2,7 @@ const express = require("express")
 const app = express()
 const port = 3000
 const cors = require ("cors")
-const {sequelize, User} = require ('./models')
+const {sequelize, User, Messages} = require ('./models')
 const migrationhelper = require('./migrationhelper')
 const session = require('express-session');
 const userController = require('./controllers/userController.js')
@@ -35,7 +35,18 @@ app.post('/createAccount', validateCreateUser, userController.onCreateAccount,
     res.send(`Hello, ${req.body.name}!`);
 });
 
-app.post('/newMessage', messageController.onCreateMessage);
+app.get('/allMessages',async (req, res)=>{
+    let messages = await Messages.findAll()
+    console.log(messages);
+    let result = messages.map(m=> ({
+        text: m.text,
+        userName: m.userName
+
+    }))
+    res.json(result)
+});
+
+app.post('/newMessage', messageController.onCreateMessage,);
 
 app.listen(port, async () => {
     await migrationhelper.migrate()

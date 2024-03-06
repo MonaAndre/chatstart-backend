@@ -21,3 +21,6 @@ Content-Type: application/json; charset=utf-8
   "userName": "Lisa",
    "text": "hejdå!"
  }
+
+### get all messages
+GET http://127.0.0.1:3000/allMessages
