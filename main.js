@@ -37,11 +37,12 @@ app.post('/createAccount', validateCreateUser, userController.onCreateAccount,
 
 app.get('/allMessages',async (req, res)=>{
     let messages = await Messages.findAll()
-    console.log(messages);
+    console.log(req.session.userName);
     let result = messages.map(m=> ({
         text: m.text,
-        userName: m.userName
-
+        userName: m.userName,
+        isCurrentUser: req.session.userName == m.userName
+        
     }))
     res.json(result)
 });
