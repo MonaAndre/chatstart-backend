@@ -35,17 +35,27 @@ app.post('/createAccount', validateCreateUser, userController.onCreateAccount,
     res.send(`Hello, ${req.body.name}!`);
 });
 
+
 app.get('/allMessages',async (req, res)=>{
+    if (req.session.userName == undefined || null){
+        res.status(401).json({error: 'You are not logged in'});
+    }else{
     let messages = await Messages.findAll()
     console.log(req.session.userName);
     let result = messages.map(m=> ({
         text: m.text,
         userName: m.userName,
-        isCurrentUser: req.session.userName == m.userName
-        
+        isCurrentUser: req.session.userName == m.userName       
     }))
     res.json(result)
+ }
 });
+
+app.get('/session', (req, res) => {
+console.log(req.session.userName)
+res.send(req.session.userName)
+});
+
 
 app.post('/newMessage', messageController.onCreateMessage,);
 

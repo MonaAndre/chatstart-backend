@@ -22,5 +22,8 @@ Content-Type: application/json; charset=utf-8
    "text": "hejdå!"
  }
 
+### get session
+GET http://127.0.0.1:3000/session
+
 ### get all messages
 GET http://127.0.0.1:3000/allMessages
