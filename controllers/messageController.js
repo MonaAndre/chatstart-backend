@@ -9,7 +9,6 @@ async function onCreateMessage(req, res) {
     } else{
         console.log("logga in först");
     }
-  
 
     await Messages.create({
         userName: userName,

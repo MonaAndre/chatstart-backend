@@ -6,14 +6,11 @@ const {sequelize, User, Messages} = require ('./models')
 const migrationhelper = require('./migrationhelper')
 const session = require('express-session');
 const userController = require('./controllers/userController.js')
-const {check, validationResult} = require('express-validator')
 const {requireAuth} = require('./middlewares/requireAuth.js')
 const {validateCreateUser} = require('./validators/userValidators.js')
 const messageController = require('./controllers/messageController.js')
 
-
 app.use(express.json())
-
 
 app.use(cors({
     origin:"http://localhost:5501",
@@ -24,10 +21,8 @@ app.use(session({
     secret: 'my-secret-key',
     resave: false,
     saveUninitialized: true,
-    // cookie: { secure: true } HTTPS
 }));
 
-//app.post('/createAccount',validateCreateUser, userController.onCreateAccount)
 app.post('/api/signIn', userController.onLogin);
 
 app.post('/createAccount', validateCreateUser, userController.onCreateAccount,
@@ -35,9 +30,8 @@ app.post('/createAccount', validateCreateUser, userController.onCreateAccount,
     res.send(`Hello, ${req.body.name}!`);
 });
 
-
 app.get('/allMessages',async (req, res)=>{
-    if (req.session.userName == undefined || null){
+    if (req.session.userName == undefined || req.session.userName == null){
         res.status(401).json({error: 'You are not logged in'});
     }else{
     let messages = await Messages.findAll()
@@ -56,7 +50,6 @@ console.log(req.session.userName)
 res.send(req.session.userName)
 });
 
-
 app.post('/newMessage', messageController.onCreateMessage,);
 
 app.listen(port, async () => {
@@ -64,4 +57,3 @@ app.listen(port, async () => {
     await sequelize.authenticate()
     console.log(`Example app listening2 on port ${port}`)
 })
-

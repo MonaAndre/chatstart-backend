@@ -45,6 +45,5 @@ const validateCreateUser = [
 ];
 
 module.exports = {
-  //validateLoginUser,
   validateCreateUser
 }
